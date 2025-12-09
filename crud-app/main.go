@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
-//	"encoding/json"
-//	"math/rand"
+
+	//	"encoding/json"
+	//	"math/rand"
 	"net/http"
-//	"strconv"
+	//	"strconv"
 	"github.com/gorilla/mux"
 )
 
@@ -22,7 +24,35 @@ type Director struct{
 	FirstName string `json:"firstname"`
 }
 
-var movies[]Movie
+var movies []Movie
+
+func getMovies(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-type","application/json")
+	json.NewEncoder(w).Encode(movies);
+}
+
+func deleteMovieById(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-type","application/json");
+	params := mux.Vars(r);
+	for index, item := range movies{
+		if item.ID == params["id"]{
+			movies = append(movies[:index], movies[index+1:]...)
+			break
+		}
+	}
+}	
+
+func getMovieById(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-type","application/json");
+	params := mux.Vars(r);
+
+	for _, item := range movies{
+		if item.ID == params["id"]{
+			json.NewEncoder(w).Encode(item);
+			return;
+		}
+	}
+}
 
 
 
