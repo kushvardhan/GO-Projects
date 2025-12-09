@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
-	//	"encoding/json"
-	//	"math/rand"
+	"math/rand"
 	"net/http"
-	//	"strconv"
+	"strconv"
 	"github.com/gorilla/mux"
 )
 
@@ -40,7 +38,18 @@ func deleteMovieById(w http.ResponseWriter, r *http.Request){
 			break
 		}
 	}
+	json.NewEncoder(w).Encode(movies);
 }	
+
+func createMovie(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-type","application/json")
+	var movie Movie
+	_ = json.NewDecoder(r.Body).Decode(&movie)
+	movie.ID = strconv.Itoa(rand.Intn(100000000))
+	movies = append(movies,movie);
+	json.NewEncoder(w).Encode(movie);
+}
+
 
 func getMovieById(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type","application/json");
@@ -54,6 +63,25 @@ func getMovieById(w http.ResponseWriter, r *http.Request){
 	}
 }
 
+func updateMovieById(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    params := mux.Vars(r)
+
+    for i, item := range movies {
+        if item.ID == params["id"] {
+            var updated Movie
+            json.NewDecoder(r.Body).Decode(&updated)
+
+            updated.ID = params["id"]
+            movies[i] = updated
+
+            json.NewEncoder(w).Encode(updated)
+            return
+        }
+    }
+
+    http.Error(w, "Movie not found", http.StatusNotFound)
+}
 
 
 func main(){
@@ -151,10 +179,10 @@ movies = append(movies, Movie{
 
 
 	r.HandleFunc("/movies", getMovies).Methods("GET");
-	r.HandleFunc("/movied/{id}",getMovieById).Methods("GET");
-	r.HandleFunc("/createMovie", createMovies).Methods("POST");
-	r.HandleFunc("/movied/{id}",updateMovieById).Methods("PUT");
-	r.HandleFunc("/movied/{id}",deleteMovieById).Methods("DELETE");
+	r.HandleFunc("/movies/{id}",getMovieById).Methods("GET");
+	r.HandleFunc("/createMovie", createMovie).Methods("POST");
+	r.HandleFunc("/movies/{id}",updateMovieById).Methods("PUT");
+	r.HandleFunc("/movies/{id}",deleteMovieById).Methods("DELETE");
 
 	
 	fmt.Printf("Server Starting at PORT: 8000\n");
