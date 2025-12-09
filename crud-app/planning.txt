@@ -1,0 +1,62 @@
+---------------------------------------------------------
+                 MOVIES CRUD API (Go + Gorilla Mux)
+---------------------------------------------------------
+
+[ NO DATABASE ]
+   |
+   X
+   │
+   │  (stores movie records USING STRUCTS AND SLICES)
+   │
+[ MOVIES SERVER ]  <-- runs on localhost:8000
+   │
+   │----> Uses GORILLA MUX for routing
+   │
+   ├─────────────────────────────────────────────────────────────┐
+   │                                                             │
+   ▼                                                             ▼
+
+---------------------------------------------------------
+ROUTE: GET ALL MOVIES
+---------------------------------------------------------
+FUNCTION     : getMovies
+ENDPOINT     : /movies
+METHOD       : GET
+DESCRIPTION  : Returns all movies from the database.
+---------------------------------------------------------
+
+---------------------------------------------------------
+ROUTE: GET MOVIE BY ID
+---------------------------------------------------------
+FUNCTION     : getMovie
+ENDPOINT     : /movies/{id}
+METHOD       : GET
+DESCRIPTION  : Returns a single movie using its ID.
+---------------------------------------------------------
+
+---------------------------------------------------------
+ROUTE: CREATE MOVIE
+---------------------------------------------------------
+FUNCTION     : createMovie
+ENDPOINT     : /movies
+METHOD       : POST
+DESCRIPTION  : Adds a new movie to the database.
+---------------------------------------------------------
+
+---------------------------------------------------------
+ROUTE: UPDATE MOVIE
+---------------------------------------------------------
+FUNCTION     : updateMovie
+ENDPOINT     : /movies/{id}
+METHOD       : PUT
+DESCRIPTION  : Updates an existing movie’s details.
+---------------------------------------------------------
+
+---------------------------------------------------------
+ROUTE: DELETE MOVIE
+---------------------------------------------------------
+FUNCTION     : deleteMovie
+ENDPOINT     : /movies/{id}
+METHOD       : DELETE
+DESCRIPTION  : Deletes a movie by ID.
+---------------------------------------------------------
