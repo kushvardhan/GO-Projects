@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 func main(){
