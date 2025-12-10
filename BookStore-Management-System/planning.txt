@@ -1,0 +1,200 @@
+PROJECT OVERVIEW (TXT DOCUMENT)
+===============================
+
+This project is a modular Go backend application using:
+- Gorilla Mux (or any router) for routing
+- GORM for database ORM
+- PostgreSQL/MySQL/SQLite as DB
+- Clean and scalable folder structure
+- Separation of concerns (controllers, models, routes, utils, etc.)
+
+The goal is to build a clean backend API (such as a Bookstore API).
+
+
+
+============================================================
+PROJECT STRUCTURE (REF FROM DIAGRAM)
+============================================================
+
+Root Folder
+│
+├── CMD/
+│     └── main.go
+│
+└── PKG/
+      ├── config/
+      │      └── app.go
+      │
+      ├── controllers/
+      │      └── book-controller.go
+      │
+      ├── models/
+      │      └── book.go
+      │
+      ├── routes/
+      │      └── bookstore-routes.go
+      │
+      └── utils/
+             └── utils.go
+
+
+
+============================================================
+FOLDER-BY-FOLDER EXPLANATION
+============================================================
+
+1) CMD/
+---------
+Contains the entry point of the application.
+File:
+- main.go → Starts server, loads routes, initializes DB.
+
+Purpose:
+- Only the "boot file" of the project.
+- Keeps the main folder clean.
+
+
+
+2) PKG/config/
+-----------------
+Contains application-wide setup code.
+
+File:
+- app.go → Database connection setup (using GORM)
+
+Responsibilities:
+- Connect to DB
+- Run automigrations
+- Return the *gorm.DB instance to other packages
+
+
+
+3) PKG/controllers/
+-------------------------
+Contains all request-handling functions.
+
+File:
+- book-controller.go → Functions like GetBooks(), CreateBook(), DeleteBook()
+
+Responsibilities:
+- Receive HTTP requests
+- Validate input
+- Call models for DB operations
+- Send JSON responses back to client
+
+
+
+4) PKG/models/
+--------------------
+Defines structs & ORM models for database tables.
+
+File:
+- book.go → Struct for Book + table mapping
+
+Responsibilities:
+- Database schema representation
+- CRUD logic using GORM
+- Model-level helper functions
+
+
+
+5) PKG/routes/
+--------------------
+Handles API endpoint definitions.
+
+File:
+- bookstore-routes.go → Contains route mappings
+
+Responsibilities:
+- Bind endpoints to controllers
+- Example:
+      router.HandleFunc("/books", GetBooks).Methods("GET")
+      router.HandleFunc("/books", CreateBook).Methods("POST")
+
+
+
+6) PKG/utils/
+-------------------
+Helper functions used across the project.
+
+File:
+- utils.go → Error handling / string conversion / JSON helpers
+
+Responsibilities:
+- Convert string → int
+- Standard API responses
+- Common utilities used in controllers & models
+
+
+
+============================================================
+BEAUTIFUL ROUTE FLOW (TXT DIAGRAM BASED ON IMAGE)
+============================================================
+
+CONTROLLER FUNCS
+       ↓
+   GETBOOKS()
+       ↓
+     /books/
+       ↓
+     POST, GET, PUT, DELETE
+       ↓
+     ROUTER
+       ↓
+   HANDLES REQUEST
+       ↓
+  PASSES TO CONTROLLER
+       ↓
+   CONTROLLER CALLS MODEL
+       ↓
+       GORM
+       ↓
+   DATABASE (Postgres/MySQL/SQLite)
+       ↓
+   RETURNS DATA AS JSON
+
+
+
+============================================================
+TECHNOLOGIES USED
+============================================================
+
+1) GO (Golang)
+   - High-performance backend language
+   - Fast concurrency, fast servers
+
+2) GORM ORM
+   - Makes DB operations easy
+   - Auto-migrations
+   - Struct-based models
+   - Handles SQL for you
+
+3) Gorilla Mux (optional router)
+   - URL parameters support
+   - Middlewares
+   - Clean routing
+
+4) PostgreSQL / MySQL (Database)
+   - Stores persistent API data (Books table)
+
+5) Clean Architecture Principles
+   - Separation of concerns
+   - Modular code
+   - Easy to scale
+
+
+
+============================================================
+SUMMARY
+============================================================
+
+This project follows a clean Go architecture:
+
+- main.go only starts the server
+- config handles DB setup
+- models contain DB structure + logic
+- controllers handle requests & responses
+- routes map URLs to controller functions
+- utils store common helper functions
+
+It is a scalable, professional project layout used in real production Go apps.
