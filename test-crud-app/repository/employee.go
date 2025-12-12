@@ -62,6 +62,23 @@ func (r *EmployeeRepo) UpdateEmployeeById(empId string, updateEmp *model.Employe
 	return res.ModifiedCount,nil
 }	
 
-func (r &EmployeeRepo) DeleteEmployeeById(empId string) (int64, error){
+func (r *EmployeeRepo) DeleteEmployeeById(empId string) (int64, error){
+	res, err := r.MongoCollection.DeleteOne(context.Background(),
+		bson.D{{Key:"employee_Id",Value:empId}})
+
+	if err != nil{
+		return 0,err
+	}
 	
+	return res.DeletedCount, nil
+}
+
+func (r *EmployeeRepo) DeleteAllEmployee() (int64, error){
+	result, err := r.MongoCollection.DeleteMany(context.Background(), bson.D())
+
+	if err != nil{
+		return 0, err
+	}
+
+	return result.DeletedCount, nil
 }
