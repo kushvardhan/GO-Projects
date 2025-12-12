@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/kushvardhan/GO-Projects/model"
 	"github.com/mongodb/mongo-go-driver/mongo"
@@ -35,4 +36,32 @@ func (r *EmployeeRepo) FindEmployeeById(empId string) (*model.Employee, error){
 	return &emp, nil
 }
 
-func 
+func (r *EmployeeRepo) FindAllEmployee() ([]model.Employee, error){
+	result , err := r.MongoCollection.Find(context.Background(), bson.D{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	var emps []model.Employee
+	err = result.All(context.Background(),&emps)
+	if err != nil{
+		return nil, fmt.Errorf("Results decode error %s", err.Error())
+	}
+	return emps, nil
+}
+
+func (r *EmployeeRepo) UpdateEmployeeById(empId string, updateEmp *model.Employee) (int64, error){
+	res, err:= r.MongoCollection.UpdateOne(context.Background(),
+		bson.D{{Key:"employee_Id",Value:empId}},
+		bson.D{{Key:"$set", Value:updateEmp}})
+	
+	if err != nil{
+		return 0, err
+	}
+	return res.ModifiedCount,nil
+}	
+
+func (r &EmployeeRepo) DeleteEmployeeById(empId string) (int64, error){
+	
+}
