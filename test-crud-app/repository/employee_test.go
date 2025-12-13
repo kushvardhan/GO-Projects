@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"go.mongodb.org/mongo-driver/internal/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -32,4 +33,34 @@ func NewMongoClient() *mongo.Client {
 	log.Println("mongodb connected and ping successful")
 
 	return client
+}
+
+func TestMongoOperations(t *testing.T){
+	mongoTestClient := NewMongoClient();
+	defer mongoTestClient.Disconnect(context.Background())
+
+	emp1:= uuid.New().String()
+	// emp2:= uuid.New().String()
+
+	call := mongoTestClient.Database("test-app").Collection("employee_test")
+
+	empRepo := EmployeeRepo{MongoCollection: call}
+
+	t.Run("Insert Employee 1", func(t *testing.T){
+		emp:= model.Employee{
+			Name :"Tony Stark",
+			Department: "Physics",
+			EmployeeId : emp1,
+		}
+
+		result, err := empRepo.InsertEmployee(&emp);
+
+		if err != nil{
+			t.Fatal("Insert 1 operation failed", err)
+		}
+
+		t.log("Insert 1 successfull", result)
+
+	})
+
 }
