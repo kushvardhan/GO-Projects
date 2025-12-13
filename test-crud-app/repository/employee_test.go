@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/kushvardhan/GO-Projects/model"
 	"go.mongodb.org/mongo-driver/internal/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -70,6 +71,21 @@ func TestMongoOperations(t *testing.T){
 			t.Fatal("get operation failed", err)
 		}
 		t.Log("emp 1", result.Name)
+	})
+
+	t.Run("Update Employee 1 Name", func(t *testing.T){
+		emp := model.Employee{
+			Name :"Tony Stark aka Iron Man",
+			Department: "Physics",
+			EmployeeId: "emp1",
+		}
+
+		result, err := empRepo.UpdateEmployeeById(emp1, &emp)
+		if err != nil{
+			log.Fatal("Error while updating name", err);
+		}
+
+		t.Log("emp 1", result.Name);
 	})
 
 	
