@@ -21,7 +21,7 @@ func init(){
 
 	log.Println("env file loaded")
 
-	mongoClient, err = mongo.Connect(context.Background(), options.Client().ApplyURI(os.Getenv("MONGO_URL"))
+	mongoClient, err = mongo.Connect(context.Background(), options.Client().ApplyURI(os.Getenv("MONGO_URL"));
 
 	if err != nil {
 		log.Fatal("Connection error", err)
@@ -35,7 +35,17 @@ func init(){
 }
 
 func main(){
+	defer mongoClient.Disconnect(context.Background())
+
 	r := mux.NewRouter()
-	log.Println("Starting Server at PORT:8000.");
-	log.Fatal(http.ListenAndServe("PORT:8000", r));
+
+	r.HandleFunc("/health", healtHandler).Methids(http.MethodGet)
+
+	log.Println("Sever is running on PORT: 4444");
+	http.ListenAndServe(":4444", r)
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request){
+	w.WriteHeader(http.StatusOK)
+	w.Write([] byte{"running..."});
 }
