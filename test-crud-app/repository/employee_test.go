@@ -88,6 +88,17 @@ func TestMongoOperations(t *testing.T){
 		t.Log("emp 1", result.Name);
 	})
 
-	
+	t.Run("Delete Employee 1", func(t *testing.T){
+		result, err := empRepo.DeleteEmployeeById(emp1)
+		if err != nil{
+			log.Fatal("Delete operation failed", err)
+		}
+
+		t.log("delete count", result);
+	})
+
+	t.Run("Get all employee", func (t *testing.T){
+		
+	})
 
 }
