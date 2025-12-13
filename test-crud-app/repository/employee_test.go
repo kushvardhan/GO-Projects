@@ -98,7 +98,23 @@ func TestMongoOperations(t *testing.T){
 	})
 
 	t.Run("Get all employee", func (t *testing.T){
-		
+		result, err := empRepo.FindAllEmployee()
+
+		if err != nil{
+			t.Fatal("get operation failed", err)
+		}
+
+		t.Log("employees", result);
 	})
+
+	t.Run("Delete All Employee for Cleanup", func(t *testing.T){
+		result, err := empRepo.DeleteAllEmployee();
+		if err != nil{
+			t.Fatal("Error while cleaning up Employee db",err);
+		}
+
+		t.Log("deleted all employee", result);
+	})
+
 
 }
