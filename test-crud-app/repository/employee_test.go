@@ -63,4 +63,15 @@ func TestMongoOperations(t *testing.T){
 
 	})
 
+	t.Run("Get Employee 1", func(t *testing.T){
+		result , err := empRepo.FindEmployeeById(emp1)
+
+		if err != nil{
+			t.Fatal("get operation failed", err)
+		}
+		t.Log("emp 1", result.Name)
+	})
+
+	
+
 }
